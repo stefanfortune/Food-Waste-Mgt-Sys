@@ -1,60 +1,81 @@
 {
-    "name": "laravel/laravel",
-    "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": [
-        "framework",
-        "laravel"
-    ],
+    "name": "longman/telegram-bot",
+    "type": "library",
+    "description": "PHP Telegram bot",
+    "keywords": ["telegram", "bot", "api"],
     "license": "MIT",
+    "homepage": "https://github.com/php-telegram-bot/core",
+    "support": {
+        "issues": "https://github.com/php-telegram-bot/core/issues",
+        "source": "https://github.com/php-telegram-bot/core"
+    },
+    "authors": [
+        {
+            "name": "Avtandil Kikabidze aka LONGMAN",
+            "email": "akalongman@gmail.com",
+            "homepage": "http://longman.me",
+            "role": "Developer"
+        },
+        {
+            "name": "Armando Lüscher",
+            "email": "armando@noplanman.ch",
+            "homepage": "https://noplanman.ch",
+            "role": "Developer"
+        },
+        {
+            "name": "PHP Telegram Bot Team",
+            "homepage": "https://github.com/php-telegram-bot/core/graphs/contributors",
+            "role": "Developer"
+        }
+    ],
     "require": {
-        "php": "^8.2",
-        "laravel/framework": "^11.0",
-        "laravel/tinker": "^2.9"
+        "php": "^8.1",
+        "ext-pdo": "*",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "psr/log": "^1.1|^2.0|^3.0",
+        "guzzlehttp/guzzle": "^6.0|^7.0"
     },
     "require-dev": {
-        "filp/whoops": "^2.15",
-        "fakerphp/faker": "^1.23",
-        "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.1",
-        "phpunit/phpunit": "^11.0"
+        "phpunit/phpunit": "^9.5",
+        "squizlabs/php_codesniffer": "^3.6",
+        "dms/phpunit-arraysubset-asserts": "^0.2",
+        "monolog/monolog": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Longman\\TelegramBot\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Longman\\TelegramBot\\Tests\\Unit\\": "tests/Unit"
+        }
+    },
+    "scripts": {
+        "check-code": [
+            "\"vendor/bin/phpcs\""
+        ],
+        "test": [
+            "\"vendor/bin/phpunit\""
+        ],
+        "test-cov": [
+            "XDEBUG_MODE=coverage \"vendor/bin/phpunit\" --coverage-clover clover.xml"
+        ],
+        "test-cov-upload": [
+            "@php ocular.phar code-coverage:upload --format=php-clover clover.xml"
+        ]
     },
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "process-timeout": 3600
     },
     "extra": {
-        "laravel": {
-            "dont-discover": []
+        "branch-alias": {
+            "dev-develop": "0.83.x-dev"
         }
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "app/"
-        },
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "scripts": {
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
-        ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi"
-        ]
     }
 }
