@@ -1,0 +1,22 @@
+# netlify.toml  
+
+[build]  
+  publish = public      # Change this to your build output directory (e.g., 'public' or 'dist')  
+  command = composer install && npm run build   # Specify your build command if needed  
+
+[functions]  
+  runtime = php-8.2      # Set the PHP version to 8.2  
+
+[redirects]  
+  # Optional: Add any redirects you may need  
+  # Example:   
+  # 301 /old-path /new-path  
+
+[headers]  
+  # Optional: Specify any custom headers  
+  [[headers]]  
+    for = "/*"  
+    values = {   
+      "X-Frame-Options" = "DENY"   
+      "X-Content-Type-Options" = "nosniff"   
+    }
