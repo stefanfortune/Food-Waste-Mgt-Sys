@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatApp</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+        }
+        .chat-container {
+            width: 400px;
+            height: 600px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-window {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .message {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 10px;
+        }
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+        }
+        .bot-response {
+            background-color: #e9ecef;
+            align-self: flex-start;
+        }
+        .input-group {
+            padding: 10px;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-window" id="chatWindow">
+        <!-- Messages will be appended here -->
+    </div>
+    <div class="input-group">
+        <input type="text" class="form-control" id="messageInput" placeholder="Type your message...">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="button" id="sendButton">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('sendButton').addEventListener('click', function() {
+        const messageInput = document.getElementById('messageInput');
+        const chatWindow = document.getElementById('chatWindow');
+        const userMessage = messageInput.value.trim();
+
+        if (userMessage === '') return;
+
+        // Display user message
+        const userMessageElement = document.createElement('div');
+        userMessageElement.classList.add('message', 'user-message');
+        userMessageElement.textContent = userMessage;
+        chatWindow.appendChild(userMessageElement);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+
+        // Clear input
+        messageInput.value = '';
+
+        // Send user message to the server
+        fetch('/api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: userMessage })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Display bot response
+            const botResponseElement = document.createElement('div');
+            botResponseElement.classList.add('message', 'bot-response');
+            botResponseElement.textContent = data.response;
+            chatWindow.appendChild(botResponseElement);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+
+</body>
+</html>
